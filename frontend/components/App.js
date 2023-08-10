@@ -18,8 +18,13 @@ export default function App() {
 
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate()
-  const redirectToLogin = () => { /* ✨ implement */ }
-  const redirectToArticles = () => { /* ✨ implement */ }
+
+  const redirectToLogin = () => { 
+    navigate('/')
+  }
+  const redirectToArticles = () => { 
+    navigate('/articles')
+   }
 
   const logout = () => {
     // ✨ implement
@@ -78,11 +83,11 @@ export default function App() {
           <NavLink id="articlesScreen" to="/articles">Articles</NavLink>
         </nav>
         <Routes>
-          <Route path="/" element={<LoginForm />} />
+          <Route path="/" element={<LoginForm push={redirectToArticles}/>} />
           <Route path="articles" element={
             <>
               <ArticleForm />
-              <Articles />
+              <Articles push={redirectToLogin}/>
             </>
           } />
         </Routes>
