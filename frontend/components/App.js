@@ -41,7 +41,7 @@ export default function App() {
   const currentArt = articles.filter( art =>
       (art.article_id === currentArticleId)
         
-    )[0] || {}
+    )[0] || null
 
   const login = ({ username, password }) => {
     setMessage('')
@@ -101,13 +101,24 @@ export default function App() {
 
   }
 
-  const updateArticle = ({ article_id, article }) => {
+  const updateArticle = (article_id, article) => {
     // ✨ implement
     // You got this!
+    axiosWithAuth().put(`${article_id}`,article)
+    .then(() =>{
+      getArticles()
+    }
+    )
   }
 
   const deleteArticle = article_id => {
     // ✨ implement
+    console.log('deleteArt is running baby')
+    axiosWithAuth().delete(`${article_id}`)
+    .then(res =>{
+      console.log(res)
+      getArticles()
+    })
   }
 
   return (
@@ -126,8 +137,8 @@ export default function App() {
           <Route path="/" element={<LoginForm login={login}/>} />
           <Route path="articles" element={
             <>
-              <ArticleForm currentArticle={currentArt} postArticle={postArticle} updateArticle={updateArticle}/>
-              <Articles push={redirectToLogin} getArticles={getArticles} articles={articles} setCurrentArticleId={setCurrentArticleId}/>
+              <ArticleForm currentArticle={currentArt} postArticle={postArticle} updateArticle={updateArticle} setCurrentArticleId={setCurrentArticleId}/>
+              <Articles push={redirectToLogin} getArticles={getArticles} articles={articles} setCurrentArticleId={setCurrentArticleId} deleteArticle={deleteArticle}/>
             </>
           } />
         </Routes>
