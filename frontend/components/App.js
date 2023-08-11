@@ -36,6 +36,9 @@ export default function App() {
     // and a message saying "Goodbye!" should be set in its proper state.
     // In any case, we should redirect the browser back to the login screen,
     // using the helper above.
+    localStorage.removeItem('token')
+    setMessage('Goodbye!')
+    redirectToLogin()
   }
   
   const currentArt = articles.filter( art =>
@@ -54,7 +57,7 @@ export default function App() {
       redirectToArticles();
     })
     .catch(err =>{
-      console.log(err)
+      console.error(err)
     })
     .finally(
       setSpinnerOn(false)
@@ -70,7 +73,7 @@ export default function App() {
       setMessage(res.data.message)
     })
     .catch(err =>{
-      console.log(err)
+      console.error(err)
       redirectToLogin();
     })
     .finally(() =>{
@@ -90,7 +93,10 @@ export default function App() {
     .then((res) =>{
       
       // code runs all of postArticle before running getArticle, making the messages set out of the order i wan.. need to clean that up
-      getArticles()
+      setArticles([
+        ...articles,
+        res.data.article
+      ])
       setMessage(res.data.message)
     })
     .catch(
@@ -105,19 +111,29 @@ export default function App() {
     // ✨ implement
     // You got this!
     axiosWithAuth().put(`${article_id}`,article)
-    .then(() =>{
-      getArticles()
+    .then((res) =>{
+      setArticles(
+        articles.map(art =>{
+          if(art.article_id === res.data.article.article_id)
+            return res.data.article
+          else
+            return art
+        }))
+      setMessage(res.data.message)
     }
     )
   }
 
   const deleteArticle = article_id => {
     // ✨ implement
-    console.log('deleteArt is running baby')
     axiosWithAuth().delete(`${article_id}`)
-    .then(res =>{
-      console.log(res)
-      getArticles()
+    .then((res) =>{
+      setMessage(res.data.message)
+      setArticles(
+        articles.filter(art =>
+          (art.article_id !== article_id)
+          )
+      )
     })
   }
 
