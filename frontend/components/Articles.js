@@ -7,7 +7,7 @@ export default function Articles(props) {
     <Navigate to="/" />
   }
   // ✨ where are my props? Destructure them here
-  const { push, articles, getArticles, setCurrentArticleId, deleteArticle } = props
+  const { articles, getArticles, setCurrentArticleId, deleteArticle } = props
   // ✨ implement conditional logic: if no token exists
   // we should render a Navigate to login screen (React Router v.6)
   

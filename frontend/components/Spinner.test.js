@@ -5,10 +5,12 @@ import Spinner from "./Spinner"
 import { rerender, render, screen } from "@testing-library/react"
 
 test('sanity', () => {
-  const rerender = render(<Spinner on ={true}/>)
-  const message = screen.getByText('Please wait')
-  expect(message).toBeInTheDocument()
+   const {rerender} = render(<Spinner on ={true}/>)
+  let message = screen.queryByText('Please wait...')
+  
+  expect(message).toBeTruthy()
   rerender(<Spinner on ={false}/>)
-  expect(message).not.toBeInTheDocument()
+  message = screen.queryByText('Please wait...')
+  expect(message).toBeFalsy()
 
 })
