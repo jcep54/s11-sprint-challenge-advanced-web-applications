@@ -1,16 +1,26 @@
 import React, { useEffect } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate,Route } from 'react-router-dom'
 import PT from 'prop-types'
 
+export const PrivateRoute = ({component: Component, ...rest}) =>{
+  return <Route {...rest} render={(props) =>{
+    if( localStorage.getItem('token'))
+      return <Component {...props}/>
+    else 
+      return <Navigate to='/'/>
+
+    }}/>
+}
+
 export default function Articles(props) {
-  if(!localStorage.getItem('token')){
-    <Navigate to="/" />
-  }
+  
   // ✨ where are my props? Destructure them here
   const { articles, getArticles, setCurrentArticleId, deleteArticle } = props
   // ✨ implement conditional logic: if no token exists
   // we should render a Navigate to login screen (React Router v.6)
-  
+  if(!localStorage.getItem('token')){
+    <Navigate to="/" />
+  }
   
   useEffect(() => {
     // ✨ grab the articles here, on first render only
